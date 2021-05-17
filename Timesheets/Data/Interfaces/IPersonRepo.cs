@@ -13,7 +13,7 @@ namespace Timesheets.Data.Interfaces
         Person GetByName(string name);
         List<Person> GetСollection(int skip, int take);
         int AddToCollection(Person person);
-        void UpdateCollection(PersonDto person);
-        void DeleteFromCollection(PersonDto person);
+        int UpdateCollection(Person person);
+        int DeleteFromCollection(int id);
     }
 }
