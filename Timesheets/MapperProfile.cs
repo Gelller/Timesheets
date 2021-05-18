@@ -13,6 +13,7 @@ namespace Timesheets
         public MapperProfile()
         {
             CreateMap<Person, PersonDto>();
+            CreateMap<PersonDto, Person>();
         }
     }
 }

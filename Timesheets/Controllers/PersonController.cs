@@ -15,10 +15,12 @@ namespace Timesheets.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IPersonManager _personManager;
+        private readonly IMapper _mapper;
 
-        public PersonController(IPersonManager personManager)
+        public PersonController(IPersonManager personManager, IMapper mapper)
         {
             _personManager = personManager;
+            _mapper = mapper;
         }
 
         [HttpGet("persons/{id}")]
@@ -44,22 +46,14 @@ namespace Timesheets.Controllers
         [HttpPost("persons")]
         public IActionResult AddToCollection([FromBody] PersonDto person)
         {        
-            var id =_personManager.AddToCollection(new Person
-            {
-                FirstName = person.FirstName,
-                LastName = person.LastName,
-                Email = person.Email,
-                Company = person.Company,
-                Age = person.Age
-
-            });
+            var id = _personManager.AddToCollection(_mapper.Map<Person>(person));
             return Ok(id);
         }
 
         [HttpPut("persons")]
-        public IActionResult UpdateCollection([FromBody] Person person)
+        public IActionResult UpdateCollection([FromBody] PersonDto person)
         {
-            var id = _personManager.UpdateCollection(person);    
+            var id = _personManager.UpdateCollection(_mapper.Map<Person>(person));          
             return Ok(id);
         }
 

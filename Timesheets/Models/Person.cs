@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Timesheets.Models
 {
+    /// <summary>
+    /// Информация о человеке
+    /// </summary>
     public class Person
     {
         public int Id { get; set; }

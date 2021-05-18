@@ -61,11 +61,10 @@ namespace Timesheets
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API сервис");
             });
 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            });         
         }
     }
 }
