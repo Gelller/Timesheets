@@ -10,6 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timesheets.Data.Implementation;
+using Timesheets.Data.Interfaces;
+using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Implementation;
+using AutoMapper;
 
 namespace Timesheets
 {
@@ -25,7 +30,14 @@ namespace Timesheets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
+            services.AddSwaggerGen();
+            services.AddScoped<IPersonRepo, PersonRepo>();
+            services.AddScoped<IPersonManager, PersonManager>();
+            var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
+            var mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,10 +54,17 @@ namespace Timesheets
 
             app.UseAuthorization();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API сервис");
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            });         
         }
     }
 }
