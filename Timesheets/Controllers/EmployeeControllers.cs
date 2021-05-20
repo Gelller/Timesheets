@@ -48,5 +48,11 @@ namespace Timesheets.Controllers
             await _employeeManager.Update(id, _mapper.Map<Employee>(employee));
             return Ok();
         }
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            await _employeeManager.Delete(id);
+            return Ok();
+        }
     }
 }

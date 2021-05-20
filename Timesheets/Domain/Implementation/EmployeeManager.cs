@@ -21,7 +21,7 @@ namespace Timesheets.Domain.Implementation
         {
             await _employeeRepo.Add(employee);
             return employee.Id;
-        }
+        }     
         public async Task<Employee> GetItem(Guid id)
         {
             return await _employeeRepo.GetItem(id);
@@ -34,6 +34,10 @@ namespace Timesheets.Domain.Implementation
         {
             employee.Id = id;
             await _employeeRepo.Update(employee);
+        }
+        public async Task Delete(Guid id)
+        {
+            await _employeeRepo.Delete(id);
         }
     }
 }

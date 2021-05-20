@@ -36,5 +36,10 @@ namespace Timesheets.Domain.Implementation
             item.Id = id;
             await _userRepo.Update(item);
         }
+
+        public async Task Delete(Guid id)
+        {
+            await _userRepo.Delete(id);
+        }
     }
 }

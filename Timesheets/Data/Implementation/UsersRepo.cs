@@ -36,5 +36,12 @@ namespace Timesheets.Data.Implementation
             _context.Users.Update(item);
             await _context.SaveChangesAsync();
         }
+
+        public async Task Delete(Guid id)
+        {
+            var item = await _context.Users.FindAsync(id);
+            _context.Users.Remove(item);
+            await _context.SaveChangesAsync();
+        }
     }
 }

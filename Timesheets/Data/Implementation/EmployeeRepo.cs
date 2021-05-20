@@ -21,6 +21,14 @@ namespace Timesheets.Data.Implementation
             await _context.SaveChangesAsync();
             return item.Id;
         }
+
+        public async Task Delete(Guid id)
+        {
+            var item = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(item);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Employee> GetItem(Guid id)
         {
             var result = await _context.Employees.FindAsync(id);
