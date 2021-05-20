@@ -15,6 +15,11 @@ using Timesheets.Data.Interfaces;
 using Timesheets.Domain.Interfaces;
 using Timesheets.Domain.Implementation;
 using AutoMapper;
+using Timesheets.Data;
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.EntityFrameworkCore.Design;
+
 
 namespace Timesheets
 {
@@ -30,14 +35,17 @@ namespace Timesheets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen();
-            services.AddScoped<IPersonRepo, PersonRepo>();
-            services.AddScoped<IPersonManager, PersonManager>();
+            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            services.AddScoped<IEmployeeManager, EmployeeManager>();
+            services.AddScoped<IUsersRepo, UsersRepo>();
+            services.AddScoped<IUsersManager, UsersManager>();
             var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
             var mapper = mapperConfiguration.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddSingleton(mapper);        
+            services.AddDbContext<TimesheetDbContext>(options =>
+             options.UseNpgsql(Configuration.GetConnectionString("PostgreConnectionString")));         
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,8 +12,9 @@ namespace Timesheets
     {
         public MapperProfile()
         {
-            CreateMap<Person, PersonDto>();
-            CreateMap<PersonDto, Person>();
+            CreateMap<UserDto, User>();
+            CreateMap<EmployeeDto, Employee>();
         }
     }
+    
 }
