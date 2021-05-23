@@ -9,5 +9,6 @@ namespace Timesheets.Data.Interfaces
 {
     public interface IUsersRepo : IRepoBase<User>
     {
+        Task<User> GetByLoginAndPasswordHash(string login, byte[] passwordHash);
     }
 }

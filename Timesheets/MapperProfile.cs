@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Models;
 using Timesheets.Models.Dto;
+using Timesheets.Domain.Implementation;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Timesheets
 {
@@ -12,9 +15,8 @@ namespace Timesheets
     {
         public MapperProfile()
         {
-            CreateMap<UserDto, User>();
+            CreateMap<User, UserDto>();
             CreateMap<EmployeeDto, Employee>();
-        }
-    }
-    
+        }     
+    }  
 }

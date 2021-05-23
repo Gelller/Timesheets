@@ -19,6 +19,7 @@ using Timesheets.Data;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore.Design;
+using Timesheets.Infrastructure.Extensions;
 
 
 namespace Timesheets
@@ -35,17 +36,19 @@ namespace Timesheets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureDbContext(Configuration);
+            services.ConfigureAuthentication(Configuration);
+            services.ConfigureRepositories();
+            services.ConfigureDomainManagers();
+            services.ConfigureBackendSwagger();
+
             services.AddControllers();
-            services.AddSwaggerGen();
-            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
-            services.AddScoped<IEmployeeManager, EmployeeManager>();
-            services.AddScoped<IUsersRepo, UsersRepo>();
-            services.AddScoped<IUsersManager, UsersManager>();
+
+
+
             var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
             var mapper = mapperConfiguration.CreateMapper();
-            services.AddSingleton(mapper);        
-            services.AddDbContext<TimesheetDbContext>(options =>
-             options.UseNpgsql(Configuration.GetConnectionString("PostgreConnectionString")));         
+            services.AddSingleton(mapper);              
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,25 +57,40 @@ namespace Timesheets
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Timesheets v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseSwagger();
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API сервис");
-            });
+            //app.UseHttpsRedirection();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });         
+            //app.UseRouting();
+
+            //app.UseAuthorization();
+
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseSwagger();
+            //    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Timesheets v1"));
+            //}
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //});         
         }
     }
 }

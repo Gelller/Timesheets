@@ -7,6 +7,10 @@ using Timesheets.Models;
 using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
 using Timesheets.Data;
+using Timesheets.Models.Dto;
+using System.Security.Cryptography;
+using System.Text;
+using Timesheets.Infrastructure.Extensions;
 
 namespace Timesheets.Domain.Implementation
 {
@@ -18,14 +22,30 @@ namespace Timesheets.Domain.Implementation
         {
             _userRepo = userRepo;
         }
+        public async Task<User> GetUser(LoginRequest request)
+        {
+            var passwordHash = GetPasswordHash(request.Password);
+            var user = await _userRepo.GetByLoginAndPasswordHash(request.Login, passwordHash);
+
+            return user;
+        }
         public async Task<User> GetItem(Guid id)
         {
             return await _userRepo.GetItem(id);
         }
-        public async Task<Guid> Create(User item)
+        public async Task<Guid> Create(UserDto item)
         {
-            await _userRepo.Add(item);
-            return item.Id;
+            item.EnsureNotNull(nameof(item));
+
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                Username = item.Username,
+                PasswordHash = GetPasswordHash(item.Password),
+                Role = item.Role
+            };
+            await _userRepo.Add(user);
+            return user.Id;
         }
         public async Task<IEnumerable<User>> GetItems()
         {
@@ -36,10 +56,16 @@ namespace Timesheets.Domain.Implementation
             item.Id = id;
             await _userRepo.Update(item);
         }
-
         public async Task Delete(Guid id)
         {
             await _userRepo.Delete(id);
+        }
+        private static byte[] GetPasswordHash(string password)
+        {
+            using (var sha1 = new SHA1CryptoServiceProvider())
+            {
+                return sha1.ComputeHash(Encoding.Unicode.GetBytes(password));
+            }
         }
     }
 }

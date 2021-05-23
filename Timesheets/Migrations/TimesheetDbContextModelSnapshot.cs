@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Timesheets.Data;
+using Timesheets.Data.Ef;
 
 namespace Timesheets.Migrations
 {
@@ -18,6 +18,23 @@ namespace Timesheets.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            modelBuilder.Entity("Timesheets.Models.Client", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("User")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("clients");
+                });
 
             modelBuilder.Entity("Timesheets.Models.Contract", b =>
                 {
@@ -42,7 +59,7 @@ namespace Timesheets.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contract");
+                    b.ToTable("contracts");
                 });
 
             modelBuilder.Entity("Timesheets.Models.Employee", b =>
@@ -59,7 +76,32 @@ namespace Timesheets.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employee");
+                    b.ToTable("employees");
+                });
+
+            modelBuilder.Entity("Timesheets.Models.Invoice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ContractId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateEnd")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
+
+                    b.ToTable("invoices");
                 });
 
             modelBuilder.Entity("Timesheets.Models.Service", b =>
@@ -73,14 +115,14 @@ namespace Timesheets.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Service");
+                    b.ToTable("services");
                 });
 
             modelBuilder.Entity("Timesheets.Models.Sheet", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
 
                     b.Property<int>("Amount")
                         .HasColumnType("integer");
@@ -94,6 +136,9 @@ namespace Timesheets.Migrations
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("InvoiceId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 
@@ -103,9 +148,11 @@ namespace Timesheets.Migrations
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("InvoiceId");
+
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Sheets");
+                    b.ToTable("sheets");
                 });
 
             modelBuilder.Entity("Timesheets.Models.User", b =>
@@ -114,12 +161,29 @@ namespace Timesheets.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
                     b.Property<string>("Username")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("users");
+                });
+
+            modelBuilder.Entity("Timesheets.Models.Invoice", b =>
+                {
+                    b.HasOne("Timesheets.Models.Contract", "Contract")
+                        .WithMany()
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
                 });
 
             modelBuilder.Entity("Timesheets.Models.Sheet", b =>
@@ -136,6 +200,10 @@ namespace Timesheets.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Timesheets.Models.Invoice", "Invoice")
+                        .WithMany("Sheets")
+                        .HasForeignKey("InvoiceId");
+
                     b.HasOne("Timesheets.Models.Service", "Service")
                         .WithMany("Sheets")
                         .HasForeignKey("ServiceId")
@@ -146,6 +214,8 @@ namespace Timesheets.Migrations
 
                     b.Navigation("Employee");
 
+                    b.Navigation("Invoice");
+
                     b.Navigation("Service");
                 });
 
@@ -155,6 +225,11 @@ namespace Timesheets.Migrations
                 });
 
             modelBuilder.Entity("Timesheets.Models.Employee", b =>
+                {
+                    b.Navigation("Sheets");
+                });
+
+            modelBuilder.Entity("Timesheets.Models.Invoice", b =>
                 {
                     b.Navigation("Sheets");
                 });
