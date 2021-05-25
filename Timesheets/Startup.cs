@@ -41,14 +41,9 @@ namespace Timesheets
             services.ConfigureRepositories();
             services.ConfigureDomainManagers();
             services.ConfigureBackendSwagger();
+            services.ConfigureMapper();
 
-            services.AddControllers();
-
-
-
-            var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
-            var mapper = mapperConfiguration.CreateMapper();
-            services.AddSingleton(mapper);              
+            services.AddControllers();          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,29 +63,7 @@ namespace Timesheets
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-
-            //app.UseHttpsRedirection();
-
-            //app.UseRouting();
-
-            //app.UseAuthorization();
-
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseSwagger();
-            //    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Timesheets v1"));
-            //}
-
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});         
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });          
         }
     }
 }

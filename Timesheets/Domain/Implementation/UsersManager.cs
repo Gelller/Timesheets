@@ -33,19 +33,11 @@ namespace Timesheets.Domain.Implementation
         {
             return await _userRepo.GetItem(id);
         }
-        public async Task<Guid> Create(UserDto item)
+        public async Task<Guid> Create(User item)
         {
             item.EnsureNotNull(nameof(item));
-
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                Username = item.Username,
-                PasswordHash = GetPasswordHash(item.Password),
-                Role = item.Role
-            };
-            await _userRepo.Add(user);
-            return user.Id;
+            await _userRepo.Add(item);
+            return item.Id;
         }
         public async Task<IEnumerable<User>> GetItems()
         {
@@ -60,7 +52,7 @@ namespace Timesheets.Domain.Implementation
         {
             await _userRepo.Delete(id);
         }
-        private static byte[] GetPasswordHash(string password)
+        public static byte[] GetPasswordHash(string password)
         {
             using (var sha1 = new SHA1CryptoServiceProvider())
             {

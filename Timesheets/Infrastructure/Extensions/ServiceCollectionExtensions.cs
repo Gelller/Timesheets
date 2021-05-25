@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -54,12 +55,23 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<IEmployeeManager, EmployeeManager>();
             services.AddScoped<IUsersManager, UsersManager>();
             services.AddScoped<ILoginManager, LoginManager>();
+            services.AddScoped<ISheetManager, SheetManager>();
+            services.AddScoped<IContractManager, ContractManager>();
         }
 
         public static void ConfigureRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUsersRepo, UsersRepo>();
             services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            services.AddScoped<ISheetRepo, SheetRepo>();
+            services.AddScoped<IContractRepo, ContractRepo>();
+        }
+
+        public static void ConfigureMapper(this IServiceCollection services)
+        {
+            var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
+            var mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         public static void ConfigureBackendSwagger(this IServiceCollection services)

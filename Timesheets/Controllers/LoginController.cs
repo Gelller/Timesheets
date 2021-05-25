@@ -19,7 +19,6 @@ namespace Timesheets.Controllers
             _loginManager = loginManager;
             _userManager = userManager;
         }
-
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {

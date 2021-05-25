@@ -15,8 +15,10 @@ namespace Timesheets
     {
         public MapperProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>()
+                .ForMember(x => x.PasswordHash, x => x.MapFrom(x=> UsersManager.GetPasswordHash(x.Password)));
             CreateMap<EmployeeDto, Employee>();
-        }     
+            CreateMap<SheetDto, Sheet>();
+        }      
     }  
 }
