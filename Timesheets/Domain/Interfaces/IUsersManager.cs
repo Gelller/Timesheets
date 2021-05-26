@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Data;
 using Timesheets.Models;
+using Timesheets.Models.Dto;
 
 namespace Timesheets.Domain.Interfaces
 {
@@ -14,5 +15,6 @@ namespace Timesheets.Domain.Interfaces
             Task<Guid> Create(User user);
             Task Update(Guid id, User user);
             Task Delete(Guid id);
+            Task<User> GetUser(LoginRequest request);
     }
 }

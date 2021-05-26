@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Data.Interfaces;
 using Timesheets.Models;
+using Timesheets.Data.Ef;
 
 namespace Timesheets.Data.Implementation
 {
@@ -42,6 +43,13 @@ namespace Timesheets.Data.Implementation
             var item = await _context.Users.FindAsync(id);
             _context.Users.Remove(item);
             await _context.SaveChangesAsync();
+        }
+        public async Task<User> GetByLoginAndPasswordHash(string login, byte[] passwordHash)
+        {
+            return
+                await _context.Users
+                    .Where(x => x.Username == login && x.PasswordHash == passwordHash)
+                    .FirstOrDefaultAsync();
         }
     }
 }

@@ -7,10 +7,11 @@ using Timesheets.Domain.Interfaces;
 using Timesheets.Models.Dto;
 using Timesheets.Models;
 using AutoMapper;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Timesheets.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class EmployeeControllers : ControllerBase
@@ -23,31 +24,35 @@ namespace Timesheets.Controllers
             _employeeManager = employeeManager;
             _mapper = mapper;
         }
-
+        [Authorize(Roles = "user, admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var employee = await _employeeManager.GetItem(id);
             return Ok(employee);
         }
+        [Authorize(Roles = "user, admin")]
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
             var result = await _employeeManager.GetItems();
             return Ok(result);
         }
+        [Authorize(Roles = "user, admin")]
         [HttpPost("AddEmployee")]
         public async Task<IActionResult> AddToCollection([FromBody] EmployeeDto employee)
         {
             var id = await _employeeManager.Create(_mapper.Map<Employee>(employee));
             return Ok(id);
         }
+        [Authorize(Roles = "user, admin")]
         [HttpPut("UpdateEmployee/{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] EmployeeDto employee)
         {
             await _employeeManager.Update(id, _mapper.Map<Employee>(employee));
             return Ok();
         }
+        [Authorize(Roles = "user, admin")]
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {

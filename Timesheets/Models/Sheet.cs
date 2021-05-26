@@ -18,5 +18,6 @@ namespace Timesheets.Models
         public Employee Employee { get; set; }
         public Contract Contract { get; set; }
         public Service Service { get; set; }
+        public Invoice Invoice { get; set; }
     }
 }

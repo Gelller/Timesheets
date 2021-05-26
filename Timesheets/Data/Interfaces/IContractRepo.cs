@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Models;
-using Timesheets.Data;
 
 namespace Timesheets.Data.Interfaces
 {
-    public interface IUsersRepo : IRepoBase<User>
+    public interface IContractRepo : IRepoBase<Contract>
     {
-        Task<User> GetByLoginAndPasswordHash(string login, byte[] passwordHash);
+        Task<bool?> CheckContractIsActive(Guid id);
     }
 }
