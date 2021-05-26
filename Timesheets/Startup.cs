@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore.Design;
 using Timesheets.Infrastructure.Extensions;
+using FluentValidation.AspNetCore;
 
 
 namespace Timesheets
@@ -42,8 +43,9 @@ namespace Timesheets
             services.ConfigureDomainManagers();
             services.ConfigureBackendSwagger();
             services.ConfigureMapper();
+            services.ConfigureValidation();
 
-            services.AddControllers();          
+            services.AddControllers().AddFluentValidation();          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

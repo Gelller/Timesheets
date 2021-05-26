@@ -11,7 +11,10 @@ using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
 using Timesheets.Domain.Implementation;
 using Timesheets.Domain.Interfaces;
+using Timesheets.Models.Dto;
 using Timesheets.Models.Dto.Authentication;
+using FluentValidation;
+using Timesheets.Infrastructure.Validation;
 
 namespace Timesheets.Infrastructure.Extensions
 {
@@ -57,6 +60,8 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<ILoginManager, LoginManager>();
             services.AddScoped<ISheetManager, SheetManager>();
             services.AddScoped<IContractManager, ContractManager>();
+            services.AddScoped<IInvoiceManager, InvoiceManager>();
+
         }
 
         public static void ConfigureRepositories(this IServiceCollection services)
@@ -65,6 +70,7 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<IEmployeeRepo, EmployeeRepo>();
             services.AddScoped<ISheetRepo, SheetRepo>();
             services.AddScoped<IContractRepo, ContractRepo>();
+            services.AddScoped<IInvoiceRepo, InvoiceRepo>();
         }
 
         public static void ConfigureMapper(this IServiceCollection services)
@@ -97,6 +103,10 @@ namespace Timesheets.Infrastructure.Extensions
                     }
                 });
             });
+        }
+        public static void ConfigureValidation(this IServiceCollection services)
+        {
+            services.AddTransient<IValidator<SheetDto>, SheetDtoValidator>();
         }
     }
 }

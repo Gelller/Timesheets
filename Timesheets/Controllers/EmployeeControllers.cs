@@ -12,9 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Timesheets.Controllers
 {
     [Authorize]
-    [ApiController]
-    [Route("[controller]")]
-    public class EmployeeControllers : ControllerBase
+    public class EmployeeControllers : TimesheetBaseController
     {
         private readonly IEmployeeManager _employeeManager;
         private readonly IMapper _mapper;
