@@ -24,6 +24,7 @@ namespace Timesheets.Controllers
             _contractManager = contractManager;
             _mapper = mapper;
         }
+        /// <summary> Возвращяет запись табеля по id </summary>
         [Authorize(Roles = "user, admin")]
         [HttpGet("{id}")]
         public IActionResult Get([FromQuery] Guid id)
@@ -32,6 +33,7 @@ namespace Timesheets.Controllers
 
             return Ok(result);
         }
+        /// <summary> Возвращяет все записи табеля </summary>
         [Authorize(Roles = "user, admin")]
         [HttpGet]
         public async Task<IActionResult> GetItems()
@@ -39,8 +41,7 @@ namespace Timesheets.Controllers
             var result = await _sheetManager.GetItems();
             return Ok(result);
         }
-
-        /// <summary> Возвращает запись табеля </summary>
+        /// <summary> Создает запись табеля </summary>
         [Authorize(Roles = "user, admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SheetDto sheet)
@@ -69,7 +70,14 @@ namespace Timesheets.Controllers
             }
 
             await _sheetManager.Update(id, _mapper.Map<Sheet>(sheet));
-
+            return Ok();
+        }
+        /// <summary> Удаляет запись табеля </summary>
+        [Authorize(Roles = "user, admin")]
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            await _sheetManager.Delete(id);
             return Ok();
         }
     }

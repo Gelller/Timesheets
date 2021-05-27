@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Timesheets.Data.Interfaces;
 using Timesheets.Models;
 using Timesheets.Data.Ef;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Timesheets.Data.Implementation
 {
@@ -15,6 +15,17 @@ namespace Timesheets.Data.Implementation
         public InvoiceRepo(TimesheetDbContext context)
         {
             _context = context;
+        }           
+        public async Task<Invoice> GetItem(Guid id)
+        {
+            var result = await _context.Invoice.FindAsync(id);
+            return result;
+        }
+
+        public async Task<IEnumerable<Invoice>> GetItems()
+        {
+            var result = await _context.Invoice.ToListAsync();
+            return result;
         }
         public async Task<Guid> Add(Invoice item)
         {
@@ -22,25 +33,16 @@ namespace Timesheets.Data.Implementation
             await _context.SaveChangesAsync();
             return item.Id;
         }
-
-        public Task Delete(Guid id)
+        public async Task Update(Invoice item)
         {
-            throw new NotImplementedException();
+            _context.Invoice.Update(item);
+            await _context.SaveChangesAsync();
         }
-
-        public Task<Invoice> GetItem(Guid id)
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Invoice>> GetItems()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(Invoice item)
-        {
-            throw new NotImplementedException();
+            var item = await _context.Invoice.FindAsync(id);
+            _context.Invoice.Remove(item);
+            await _context.SaveChangesAsync();
         }
     }
 }

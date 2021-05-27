@@ -31,5 +31,25 @@ namespace Timesheets.Domain.Implementation
             return invoice.Id;
 
         }
+        public async Task<Invoice> GetItem(Guid id)
+        {
+            return await _invoiceRepo.GetItem(id);
+        }
+
+        public async Task<IEnumerable<Invoice>> GetItems()
+        {
+            return await _invoiceRepo.GetItems();
+        }
+
+        public async Task Update(Guid id, Invoice invoice)
+        {
+            invoice.Id = id;
+            await _invoiceRepo.Update(invoice);
+        }
+
+        public async Task Delete(Guid id)
+        {
+            await _invoiceRepo.Delete(id);
+        }
     }
 }

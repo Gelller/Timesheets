@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Timesheets.Domain.Interfaces;
@@ -37,7 +39,7 @@ namespace Timesheets.Domain.Implementation
             var loginResponse = new LoginResponse()
             {
                 AccessToken = accessToken,
-                ExpiresIn = accessTokenRaw.ValidTo.ToEpochTime()
+                ExpiresIn = accessTokenRaw.ValidTo.ToEpochTime(),
             };
 
             return loginResponse;

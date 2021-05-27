@@ -7,9 +7,11 @@ using Timesheets.Models.Dto;
 using Timesheets.Models;
 using Timesheets.Domain.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Timesheets.Controllers
 {
+    [Authorize]
     public class InvoiceController:TimesheetBaseController
     {
         private readonly IContractManager _contractManager;
@@ -21,6 +23,24 @@ namespace Timesheets.Controllers
             _contractManager = contractManager;
             _mapper = mapper;
         }
+        /// <summary> Возвращяет запись счета по id </summary>
+        [Authorize(Roles = "user, admin")]
+        [HttpGet("{id}")]
+        public IActionResult Get([FromQuery] Guid id)
+        {
+            var result = _invoiceManager.GetItem(id);
+
+            return Ok(result);
+        }
+        /// <summary> Возвращяет все записи счетов </summary>
+        [Authorize(Roles = "user, admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetItems()
+        {
+            var result = await _invoiceManager.GetItems();
+            return Ok(result);
+        }
+        /// <summary> Создает записи счета </summary>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] InvoiceDto invoice)
         {
@@ -33,6 +53,22 @@ namespace Timesheets.Controllers
 
             var id = await _invoiceManager.Greate(_mapper.Map<Invoice>(invoice));
             return Ok(id);
+        }
+        /// <summary> Обновляет запись счета </summary>
+        [Authorize(Roles = "user, admin")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] InvoiceDto invoice)
+        {             
+            await _invoiceManager.Update(id, _mapper.Map<Invoice>(invoice));
+            return Ok();
+        }
+        /// <summary> Удаляет запись счета </summary>
+        [Authorize(Roles = "user, admin")]
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            await _invoiceManager.Delete(id);
+            return Ok();
         }
     }
 }

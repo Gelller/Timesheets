@@ -10,7 +10,7 @@ using Timesheets.Data.Ef;
 namespace Timesheets.Migrations
 {
     [DbContext(typeof(TimesheetDbContext))]
-    [Migration("20210523083032_InitialCreate")]
+    [Migration("20210527082110_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,6 +165,12 @@ namespace Timesheets.Migrations
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("bytea");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Role")
                         .HasColumnType("text");

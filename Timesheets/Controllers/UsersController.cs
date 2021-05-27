@@ -23,6 +23,7 @@ namespace Timesheets.Controllers
             _userManager = userManager;
             _mapper = mapper;
         }
+        /// <summary> Возвращяет записиь о пользователе по id </summary>
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
@@ -30,6 +31,7 @@ namespace Timesheets.Controllers
             var user = await _userManager.GetItem(id);
             return Ok(user);
         }
+        /// <summary> Возвращяет все записи о пользователях </summary>
         [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> GetItems()
@@ -37,6 +39,7 @@ namespace Timesheets.Controllers
             var result = await _userManager.GetItems();
             return Ok(result);
         }
+        /// <summary> Создает запись о пользователе  </summary>
         [Authorize(Roles = "admin")]
         [HttpPost("AddUser")]
         public async Task<IActionResult> AddToCollection([FromBody] UserDto user)
@@ -44,6 +47,7 @@ namespace Timesheets.Controllers
            var id = await _userManager.Create(_mapper.Map<User>(user));
            return Ok(id);
         }
+        /// <summary> Обновляет запись о пользователе  </summary>
         [Authorize(Roles = "admin")]
         [HttpPut("UpdateUser/{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserDto user)
@@ -51,6 +55,7 @@ namespace Timesheets.Controllers
             await _userManager.Update(id, _mapper.Map<User>(user));
             return Ok();
         }
+        /// <summary> Удаляет запись о пользователе </summary>
         [Authorize(Roles = "admin")]
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)

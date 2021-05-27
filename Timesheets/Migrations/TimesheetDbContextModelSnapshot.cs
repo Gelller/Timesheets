@@ -164,6 +164,12 @@ namespace Timesheets.Migrations
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("bytea");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Role")
                         .HasColumnType("text");
 
