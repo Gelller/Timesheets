@@ -35,44 +35,24 @@ namespace Timesheets.Controllers
 
             var loginResponse = await _loginManager.Authenticate(user);
 
+            if(loginResponse.ExpiresIn==0)
+            {
+                //loginResponse= await Refresh(user);
+            }
+
             return Ok(loginResponse);
         }
 
-        private string GenerateJwtToken(int id, int minutes)
-        {
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(SecretCode);
+        //[HttpPost]
+        //public async Task<LoginResponse> Refresh(User user)
+        //{
 
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(minutes),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-
+        //    var loginResponse = await _loginManager.Authenticate(user);
+        //    return loginResponse;
+        //}
 
 
     }
-    //[HttpPost]
-    //public async Task<IActionResult> GetNewToken([FromBody] LoginRequest request)
-    //{
-    //    var user = await _userManager.GetUser(request);
 
-    //    if (user == null)
-    //    {
-    //        return Unauthorized();
-    //    }
-
-    //    var loginResponse = await _loginManager.Authenticate(user);
-
-    //    return Ok(loginResponse);
-    //}
 }
 

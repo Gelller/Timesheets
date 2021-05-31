@@ -108,6 +108,9 @@ namespace Timesheets.Infrastructure.Extensions
         public static void ConfigureValidation(this IServiceCollection services)
         {
             services.AddTransient<IValidator<SheetDto>, SheetDtoValidator>();
+            services.AddTransient<IValidator<EmployeeDto>, EmployeeDtoValidator>();
+            services.AddTransient<IValidator<InvoiceDto>, InvoiceDtoValidator>();
+            services.AddTransient<IValidator<UserDto>, UserDtoValidator>();
         }
     }
 }

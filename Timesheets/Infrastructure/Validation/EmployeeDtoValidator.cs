@@ -7,9 +7,9 @@ using Timesheets.Models.Dto;
 
 namespace Timesheets.Infrastructure.Validation
 {
-    public class EmployeeDtoValidation:AbstractValidator<EmployeeDto>
+    public class EmployeeDtoValidator:AbstractValidator<EmployeeDto>
     {
-        public EmployeeDtoValidation()
+        public EmployeeDtoValidator()
         {
             RuleFor(x => x.IsDeleted)
               .NotEmpty();

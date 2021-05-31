@@ -7,9 +7,9 @@ using Timesheets.Models.Dto;
 
 namespace Timesheets.Infrastructure.Validation
 {
-    public class UserDtoValidation:AbstractValidator<UserDto>
+    public class UserDtoValidator:AbstractValidator<UserDto>
     {
-        public UserDtoValidation()
+        public UserDtoValidator()
         {
             RuleFor(x => x.Username)
               .NotEmpty();
