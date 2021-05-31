@@ -49,6 +49,5 @@ namespace Timesheets.Models.Dto.Authentication
 
             return jwt;
         }
-
     }
 }

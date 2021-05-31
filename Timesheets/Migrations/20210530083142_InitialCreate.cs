@@ -68,8 +68,6 @@ namespace Timesheets.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Username = table.Column<string>(type: "text", nullable: true),
                     PasswordHash = table.Column<byte[]>(type: "bytea", nullable: true),
-                    RefreshToken = table.Column<string>(type: "text", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -94,6 +92,26 @@ namespace Timesheets.Migrations
                         name: "FK_invoices_contracts_ContractId",
                         column: x => x.ContractId,
                         principalTable: "contracts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "refreshToken",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Token = table.Column<string>(type: "text", nullable: true),
+                    Expiration = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_refreshToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_refreshToken_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -145,6 +163,12 @@ namespace Timesheets.Migrations
                 column: "ContractId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_refreshToken_UserId",
+                table: "refreshToken",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_sheets_ContractId",
                 table: "sheets",
                 column: "ContractId");
@@ -169,6 +193,9 @@ namespace Timesheets.Migrations
         {
             migrationBuilder.DropTable(
                 name: "clients");
+
+            migrationBuilder.DropTable(
+                name: "refreshToken");
 
             migrationBuilder.DropTable(
                 name: "sheets");

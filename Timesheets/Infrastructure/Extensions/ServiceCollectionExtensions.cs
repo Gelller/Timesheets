@@ -71,6 +71,7 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<ISheetRepo, SheetRepo>();
             services.AddScoped<IContractRepo, ContractRepo>();
             services.AddScoped<IInvoiceRepo, InvoiceRepo>();
+            services.AddScoped<IRefreshTokenRepo, RefreshTokenRepo>();
         }
 
         public static void ConfigureMapper(this IServiceCollection services)

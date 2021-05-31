@@ -9,6 +9,13 @@ namespace Timesheets.Data.Ef.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("users");
+
+            builder
+                          .HasOne(user => user.RefreshToken)
+                          .WithOne(refreshToken => refreshToken.User);
+             //      .HasForeignKey("UserId");
+           //  .HasForeignKey<RefreshToken>(x => x.UserId);
+
         }
     }
 }
