@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Interfaces;
 using Timesheets.Models;
 using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Timesheets.Infrastructure.Extensions;
 
-namespace Timesheets.Domain.Implementation
+namespace Timesheets.Domain.Managers.Implementation
 {
     public class UsersManager : IUsersManager
     {

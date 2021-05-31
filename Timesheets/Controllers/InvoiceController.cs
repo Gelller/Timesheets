@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Models.Dto;
 using Timesheets.Models;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 

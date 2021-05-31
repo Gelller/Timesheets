@@ -6,9 +6,9 @@ using Timesheets.Models;
 using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
 using Timesheets.Data;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Interfaces;
 
-namespace Timesheets.Domain.Implementation
+namespace Timesheets.Domain.Managers.Implementation
 {
     public class EmployeeManager : IEmployeeManager
     {

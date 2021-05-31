@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Stripe.Issuing;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Interfaces;
 using Timesheets.Models;
 using Timesheets.Models.Dto;
 
@@ -37,42 +37,6 @@ namespace Timesheets.Controllers
 
             return Ok(loginResponse);
         }
-
-        private string GenerateJwtToken(int id, int minutes)
-        {
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(SecretCode);
-
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(minutes),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-
-
-
     }
-    //[HttpPost]
-    //public async Task<IActionResult> GetNewToken([FromBody] LoginRequest request)
-    //{
-    //    var user = await _userManager.GetUser(request);
-
-    //    if (user == null)
-    //    {
-    //        return Unauthorized();
-    //    }
-
-    //    var loginResponse = await _loginManager.Authenticate(user);
-
-    //    return Ok(loginResponse);
-    //}
 }
 

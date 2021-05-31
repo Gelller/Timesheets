@@ -9,14 +9,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Interfaces;
 using Timesheets.Infrastructure.Extensions;
 using Timesheets.Models;
 using Timesheets.Models.Dto;
 using Timesheets.Models.Dto.Authentication;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace Timesheets.Domain.Implementation
+namespace Timesheets.Domain.Managers.Implementation
 {
     public class LoginManager : ILoginManager
     {

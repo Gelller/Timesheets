@@ -9,12 +9,15 @@ using Timesheets.Data;
 using Timesheets.Data.Ef;
 using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
-using Timesheets.Domain.Implementation;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Implementation;
+using Timesheets.Domain.Managers.Interfaces;
 using Timesheets.Models.Dto;
 using Timesheets.Models.Dto.Authentication;
 using FluentValidation;
 using Timesheets.Infrastructure.Validation;
+using Timesheets.Domain.Aggregates.InvoiceAggregate;
+using Timesheets.Domain.Aggregates.SheetAgrregate;
+using Timesheets.Models;
 
 namespace Timesheets.Infrastructure.Extensions
 {
@@ -72,6 +75,11 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<IContractRepo, ContractRepo>();
             services.AddScoped<IInvoiceRepo, InvoiceRepo>();
             services.AddScoped<IRefreshTokenRepo, RefreshTokenRepo>();
+
+            services.AddScoped<ISheetAggregateRepo>();
+            services.AddScoped<IInvoiceAggregateRepo>();
+            services.AddScoped<InvoiceAggregate>();
+            services.AddScoped<SheetAggregate>();
         }
 
         public static void ConfigureMapper(this IServiceCollection services)
@@ -108,6 +116,9 @@ namespace Timesheets.Infrastructure.Extensions
         public static void ConfigureValidation(this IServiceCollection services)
         {
             services.AddTransient<IValidator<SheetDto>, SheetDtoValidator>();
+            services.AddTransient<IValidator<UserDto>, UserDtoValidation>();
+            services.AddTransient<IValidator<InvoiceDto>, InvoiceDtoValidator>();
+            services.AddTransient<IValidator<EmployeeDto>, EmployeeDtoValidation>();
         }
     }
 }

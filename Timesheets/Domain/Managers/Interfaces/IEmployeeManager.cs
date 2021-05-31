@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Models;
 
-namespace Timesheets.Domain.Interfaces
+namespace Timesheets.Domain.Managers.Interfaces
 {
     public interface IEmployeeManager
     {
