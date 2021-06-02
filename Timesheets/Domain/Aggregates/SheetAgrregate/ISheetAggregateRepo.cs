@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace Timesheets.Domain.Aggregates.SheetAgrregate
 {
-    public interface ISheetAggregateRepo
+  //  public interface ISheetAggregateRepo:IRepoBaseAggregate<SheetAggregate>
+  public interface ISheetAggregateRepo
     {
         Task<SheetAggregate> GetItem(Guid id);
         Task<IEnumerable<SheetAggregate>> GetItems();

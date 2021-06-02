@@ -15,9 +15,9 @@ namespace Timesheets.Domain.Managers.Implementation
         private readonly ISheetRepo _sheetRepo;
         private readonly ISheetAggregateRepo _sheetAggregateRepo;
 
-        public SheetManager(ISheetRepo sheetRepo, ISheetAggregateRepo sheetAggregateRepo)
+        public SheetManager(ISheetRepo sheetRepo)
         {
-            _sheetAggregateRepo = sheetAggregateRepo;
+          //  _sheetAggregateRepo = sheetAggregateRepo;
             _sheetRepo = sheetRepo;
         }
         public async Task<Sheet> GetItem(Guid id)
@@ -37,9 +37,9 @@ namespace Timesheets.Domain.Managers.Implementation
 
         public async Task Approve(Guid sheetId)
         {
-           var sheet = await _sheetAggregateRepo.GetItem(sheetId);
-           sheet.ApproveSheet();
-           await _sheetAggregateRepo.Update(sheet);
+            var sheet = await _sheetAggregateRepo.GetItem(sheetId);
+            sheet.ApproveSheet();
+            await _sheetAggregateRepo.Update(sheet);
         }
         public async Task Update(Guid id, Sheet sheetDto)
         {
@@ -53,7 +53,6 @@ namespace Timesheets.Domain.Managers.Implementation
         {
             await _sheetRepo.Delete(id);
         }
-
-       
+      
     }
 }

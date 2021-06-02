@@ -17,7 +17,8 @@ using FluentValidation;
 using Timesheets.Infrastructure.Validation;
 using Timesheets.Domain.Aggregates.InvoiceAggregate;
 using Timesheets.Domain.Aggregates.SheetAgrregate;
-using Timesheets.Models;
+using Timesheets.Domain.ValueObjects;
+using Timesheets.Domain;
 
 namespace Timesheets.Infrastructure.Extensions
 {
@@ -64,6 +65,7 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<ISheetManager, SheetManager>();
             services.AddScoped<IContractManager, ContractManager>();
             services.AddScoped<IInvoiceManager, InvoiceManager>();
+        
 
         }
 
@@ -76,10 +78,8 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<IInvoiceRepo, InvoiceRepo>();
             services.AddScoped<IRefreshTokenRepo, RefreshTokenRepo>();
 
-            services.AddScoped<ISheetAggregateRepo>();
-            services.AddScoped<IInvoiceAggregateRepo>();
-            services.AddScoped<InvoiceAggregate>();
-            services.AddScoped<SheetAggregate>();
+           //  services.AddScoped<IInvoiceAggregateRepo, InvoiceRepo>();
+ 
         }
 
         public static void ConfigureMapper(this IServiceCollection services)

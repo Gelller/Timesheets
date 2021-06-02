@@ -6,6 +6,8 @@ using Timesheets.Data.Interfaces;
 using Timesheets.Models;
 using Timesheets.Data.Ef;
 using Microsoft.EntityFrameworkCore;
+using Timesheets.Domain.Aggregates.InvoiceAggregate;
+using Timesheets.Domain.Aggregates.SheetAgrregate;
 
 namespace Timesheets.Data.Implementation
 {
@@ -44,5 +46,18 @@ namespace Timesheets.Data.Implementation
             _context.Invoice.Remove(item);
             await _context.SaveChangesAsync();
         }
+
+
+        public Task Update(InvoiceAggregate item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<SheetAggregate>> GetSheets(Guid contractId, DateTime dateStart, DateTime dateEnd)
+        {
+            throw new NotImplementedException();
+        }
+
+     
     }
 }

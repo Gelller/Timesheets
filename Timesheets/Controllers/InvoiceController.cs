@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Timesheets.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class InvoiceController:TimesheetBaseController
     {
         private readonly IContractManager _contractManager;
@@ -24,7 +24,7 @@ namespace Timesheets.Controllers
             _mapper = mapper;
         }
         /// <summary> Возвращяет запись счета по id </summary>
-        [Authorize(Roles = "user, admin")]
+       // [Authorize(Roles = "user, admin")]
         [HttpGet("{id}")]
         public IActionResult Get([FromQuery] Guid id)
         {
@@ -33,7 +33,7 @@ namespace Timesheets.Controllers
             return Ok(result);
         }
         /// <summary> Возвращяет все записи счетов </summary>
-        [Authorize(Roles = "user, admin")]
+      //  [Authorize(Roles = "user, admin")]
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
@@ -44,18 +44,18 @@ namespace Timesheets.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] InvoiceDto invoice)
         {
-            var isAllowedToCreate = await _contractManager.CheckContractIsActive(invoice.ContractId);
+            //var isAllowedToCreate = await _contractManager.CheckContractIsActive(invoice.ContractId);
 
-            if (isAllowedToCreate != null && !(bool)isAllowedToCreate)
-            {
-                return BadRequest($"Contract {invoice.ContractId} is not active or not found.");
-            }
+            //if (isAllowedToCreate != null && !(bool)isAllowedToCreate)
+            //{
+            //    return BadRequest($"Contract {invoice.ContractId} is not active or not found.");
+            //}
 
             var id = await _invoiceManager.Greate(_mapper.Map<Invoice>(invoice));
             return Ok(id);
         }
         /// <summary> Обновляет запись счета </summary>
-        [Authorize(Roles = "user, admin")]
+       // [Authorize(Roles = "user, admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] InvoiceDto invoice)
         {             
@@ -63,7 +63,7 @@ namespace Timesheets.Controllers
             return Ok();
         }
         /// <summary> Удаляет запись счета </summary>
-        [Authorize(Roles = "user, admin")]
+       // [Authorize(Roles = "user, admin")]
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
