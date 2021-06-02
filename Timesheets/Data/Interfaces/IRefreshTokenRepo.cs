@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Models;
+using Timesheets.Models.Dto.Authentication;
 
 namespace Timesheets.Data.Interfaces
 {
-    public interface ISheetRepo : IRepoBase<Sheet>
+    public interface  IRefreshTokenRepo:IRepoBase<RefreshToken>
     {
-        Task<IEnumerable<Sheet>> GetItemsForInvoice(Guid contractId, DateTime dateStatr, DateTime dateEnd);
     }
 }

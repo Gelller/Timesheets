@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timesheets.Models.Dto.Authentication;
 
 namespace Timesheets.Models
 {
@@ -12,5 +13,6 @@ namespace Timesheets.Models
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }
         public string Role { get; set; }
+        public RefreshToken RefreshToken { get; set; }
     }
 }

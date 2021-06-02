@@ -12,10 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Timesheets.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [Route("[controller]")]
-    public class UsersController : ControllerBase
+  //  [Authorize]
+    public class UsersController :TimesheetBaseController
     {
         private readonly IUsersManager _userManager;
         private readonly IMapper _mapper;
@@ -25,35 +23,40 @@ namespace Timesheets.Controllers
             _userManager = userManager;
             _mapper = mapper;
         }
-        [Authorize(Roles = "admin")]
+        /// <summary> Возвращяет записиь о пользователе по id </summary>
+       // [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var user = await _userManager.GetItem(id);
             return Ok(user);
         }
-        [Authorize(Roles = "admin")]
+        /// <summary> Возвращяет все записи о пользователях </summary>
+     //   [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
             var result = await _userManager.GetItems();
             return Ok(result);
         }
-        [Authorize(Roles = "admin")]
+        /// <summary> Создает запись о пользователе  </summary>
+       // [Authorize(Roles = "admin")]
         [HttpPost("AddUser")]
         public async Task<IActionResult> AddToCollection([FromBody] UserDto user)
         {
            var id = await _userManager.Create(_mapper.Map<User>(user));
            return Ok(id);
         }
-        [Authorize(Roles = "admin")]
+        /// <summary> Обновляет запись о пользователе  </summary>
+       // [Authorize(Roles = "admin")]
         [HttpPut("UpdateUser/{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserDto user)
         {        
             await _userManager.Update(id, _mapper.Map<User>(user));
             return Ok();
         }
-        [Authorize(Roles = "admin")]
+        /// <summary> Удаляет запись о пользователе </summary>
+        //[Authorize(Roles = "admin")]
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {

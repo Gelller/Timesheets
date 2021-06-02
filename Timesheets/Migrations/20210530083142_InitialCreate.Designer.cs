@@ -10,7 +10,7 @@ using Timesheets.Data.Ef;
 namespace Timesheets.Migrations
 {
     [DbContext(typeof(TimesheetDbContext))]
-    [Migration("20210523083032_InitialCreate")]
+    [Migration("20210530083142_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,6 +62,29 @@ namespace Timesheets.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("contracts");
+                });
+
+            modelBuilder.Entity("Timesheets.Models.Dto.Authentication.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("refreshToken");
                 });
 
             modelBuilder.Entity("Timesheets.Models.Employee", b =>
@@ -177,6 +200,17 @@ namespace Timesheets.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("Timesheets.Models.Dto.Authentication.RefreshToken", b =>
+                {
+                    b.HasOne("Timesheets.Models.User", "User")
+                        .WithOne("RefreshToken")
+                        .HasForeignKey("Timesheets.Models.Dto.Authentication.RefreshToken", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Timesheets.Models.Invoice", b =>
                 {
                     b.HasOne("Timesheets.Models.Contract", "Contract")
@@ -239,6 +273,11 @@ namespace Timesheets.Migrations
             modelBuilder.Entity("Timesheets.Models.Service", b =>
                 {
                     b.Navigation("Sheets");
+                });
+
+            modelBuilder.Entity("Timesheets.Models.User", b =>
+                {
+                    b.Navigation("RefreshToken");
                 });
 #pragma warning restore 612, 618
         }

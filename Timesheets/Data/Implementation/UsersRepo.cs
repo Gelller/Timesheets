@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Data.Interfaces;
 using Timesheets.Models;
+using Timesheets.Models.Dto.Authentication;
 using Timesheets.Data.Ef;
+using System.Security.Cryptography;
 
 namespace Timesheets.Data.Implementation
 {
@@ -24,6 +26,17 @@ namespace Timesheets.Data.Implementation
         public async Task<Guid> Add(User item)
         {
             await _context.Users.AddAsync(item);
+
+          RefreshToken token = new RefreshToken
+          {
+                Id = Guid.NewGuid(),
+                UserId = item.Id,
+                Expiration = DateTime.Now.AddDays(100),
+                Token = GenerateRefreshToken()
+
+          };
+
+            await _context.RefreshToken.AddAsync(token);
             await _context.SaveChangesAsync();
             return item.Id;
         }   
@@ -50,6 +63,16 @@ namespace Timesheets.Data.Implementation
                 await _context.Users
                     .Where(x => x.Username == login && x.PasswordHash == passwordHash)
                     .FirstOrDefaultAsync();
+        }
+
+        public static string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
         }
     }
 }
