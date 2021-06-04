@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Timesheets.Data.Ef.Configurations;
+using Timesheets.Domain.Aggregates.InvoiceAggregate;
+using Timesheets.Domain.ValueObjects;
 using Timesheets.Models;
 using Timesheets.Models.Dto.Authentication;
 
@@ -15,6 +17,8 @@ namespace Timesheets.Data.Ef
         public DbSet<User> Users { get; set; }
         public DbSet<Invoice> Invoice { get; set; }
         public DbSet<RefreshToken> RefreshToken { get; set; }
+        public DbSet<Money> Money { get; set; }
+
 
         public TimesheetDbContext(DbContextOptions<TimesheetDbContext> options) : base(options)
         {
@@ -30,6 +34,7 @@ namespace Timesheets.Data.Ef
             modelBuilder.ApplyConfiguration(new SheetConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
+            modelBuilder.ApplyConfiguration(new MoneyConfiguration());
         }
     }
 }

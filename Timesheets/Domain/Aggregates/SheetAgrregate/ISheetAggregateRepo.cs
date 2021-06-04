@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timesheets.Models;
 
 namespace Timesheets.Domain.Aggregates.SheetAgrregate
 {
@@ -13,5 +14,6 @@ namespace Timesheets.Domain.Aggregates.SheetAgrregate
         Task<Guid> Add(SheetAggregate item);
         Task Update(SheetAggregate item);
         Task Delete(Guid id);
+        Task<Sheet> Approve(Guid sheetId);
     }
 }

@@ -15,9 +15,9 @@ namespace Timesheets.Domain.Managers.Implementation
         private readonly ISheetRepo _sheetRepo;
         private readonly ISheetAggregateRepo _sheetAggregateRepo;
 
-        public SheetManager(ISheetRepo sheetRepo)
+        public SheetManager(ISheetRepo sheetRepo, ISheetAggregateRepo sheetAggregateRepo)
         {
-          //  _sheetAggregateRepo = sheetAggregateRepo;
+            _sheetAggregateRepo = sheetAggregateRepo;
             _sheetRepo = sheetRepo;
         }
         public async Task<Sheet> GetItem(Guid id)

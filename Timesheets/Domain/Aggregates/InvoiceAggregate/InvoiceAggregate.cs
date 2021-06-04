@@ -31,6 +31,7 @@ namespace Timesheets.Domain.Aggregates.InvoiceAggregate
         private void CalculateSum()
         {
             var amount= Sheets.Sum(x => x.Amount * _rate);
+         //  Sum = amount;
             Sum = Money.FromDeciaml(amount);
         }
     }

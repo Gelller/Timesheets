@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Timesheets.Domain.ValueObjects
 {
     public sealed class Money:ValueObject
-    {
+    {   
         public decimal Amount { get;}
-
+        
         private Money() { }
         private Money(decimal amount)
         {

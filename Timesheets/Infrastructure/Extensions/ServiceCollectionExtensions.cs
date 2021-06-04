@@ -19,6 +19,8 @@ using Timesheets.Domain.Aggregates.InvoiceAggregate;
 using Timesheets.Domain.Aggregates.SheetAgrregate;
 using Timesheets.Domain.ValueObjects;
 using Timesheets.Domain;
+using Timesheets.Domain.Aggregates.UserAggregate;
+using Timesheets.Domain.Aggregates.EmployeeAggregate;
 
 namespace Timesheets.Infrastructure.Extensions
 {
@@ -78,8 +80,13 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<IInvoiceRepo, InvoiceRepo>();
             services.AddScoped<IRefreshTokenRepo, RefreshTokenRepo>();
 
-           //  services.AddScoped<IInvoiceAggregateRepo, InvoiceRepo>();
- 
+             services.AddScoped<IInvoiceAggregateRepo, InvoiceAggregateRepo>();
+            services.AddScoped<ISheetAggregateRepo, SheetAggregateRepo>();
+            services.AddScoped<IUserAggregateRepo, UserAggregateRepo>();
+            services.AddScoped<IEmployeeAggregateRepo, EmployeeAggregateRepo>();
+
+
+
         }
 
         public static void ConfigureMapper(this IServiceCollection services)

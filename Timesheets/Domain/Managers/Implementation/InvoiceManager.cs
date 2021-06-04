@@ -14,20 +14,14 @@ namespace Timesheets.Domain.Managers.Implementation
 {
     public class InvoiceManager :IInvoiceManager
     {
-          private readonly ISheetRepo _sheetRepo;
+        private readonly ISheetRepo _sheetRepo;
         private readonly IInvoiceRepo _invoiceRepo;
-        //  private const int Rate = 100;
         private readonly IInvoiceAggregateRepo _invoiceAggregateRepo;
-        public InvoiceManager( IInvoiceRepo invoiceRepo, ISheetRepo sheetRepo)
+        public InvoiceManager(IInvoiceAggregateRepo invoiceAggregateRepo, IInvoiceRepo invoiceRepo, ISheetRepo sheetRepo)
         {
             _invoiceRepo = invoiceRepo;
             _sheetRepo = sheetRepo;
-          //  _invoiceAggregateRepo = invoiceAggregateRepo;
-        }
-
-        public Task<Guid> Add(InvoiceAggregate item)
-        {
-            throw new NotImplementedException();
+            _invoiceAggregateRepo = invoiceAggregateRepo;
         }
 
         public Task Delete(Guid id)
@@ -35,68 +29,28 @@ namespace Timesheets.Domain.Managers.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<InvoiceAggregate> GetItem(Guid id)
+        public Task<Invoice> GetItem(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<InvoiceAggregate>> GetItems()
+        public async Task<IEnumerable<Invoice>> GetItems()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<SheetAggregate>> GetSheets(Guid contractId, DateTime dateStart, DateTime dateEnd)
-        {
-            throw new NotImplementedException();
+            return await _invoiceAggregateRepo.GetItems();
         }
 
         public async Task<Guid> Greate(Invoice request)
         {
 
             var invoice = InvoiceAggregate.Create(request.ContractId, request.DateEnd, request.DateStart);
-
-
-            //  var sheetsToInclude = await _invoiceAggregateRepo
-            //   .GetSheets(request.ContractId, request.DateStart, request.DateEnd);
-
-
-
-            var sheetsToInclude = await _sheetRepo.GetItemsForInvoice(request.ContractId, request.DateStart, request.DateEnd);
+            var sheetsToInclude = await _invoiceAggregateRepo.GetSheets(invoice.ContractId, invoice.DateStart, invoice.DateEnd);
 
             invoice.IncludeSheets(sheetsToInclude);
             await _invoiceRepo.Add(invoice);
 
-            return invoice.Id;
-
-            //var invoice = InvoiceAggregate.Create(invoiceDto.ContractId, invoiceDto.DateStart, invoiceDto.DateEnd);
-
-            //var sheetsToInclude = await _invoiceAggregateRepo.GetSheets(invoice.ContractId, invoice.DateStart, invoice.DateEnd);
-
-            //// invoice.Sheets.AddRange(sheets);
-            //// invoice.Sum = invoice.Sheets.Sum(x => x.Amount * Rate);       
-            //invoice.IncludeSheets(sheetsToInclude);
-            //await _invoiceRepo.Add(invoice);
-
-            //return invoice.Id;
-
+            return invoice.Id;      
         }
-
-        public Task Update(InvoiceAggregate item)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task Update(Guid id, Invoice invoice)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Invoice> IInvoiceManager.GetItem(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<Invoice>> IInvoiceManager.GetItems()
         {
             throw new NotImplementedException();
         }

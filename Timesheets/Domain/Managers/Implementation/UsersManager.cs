@@ -11,15 +11,18 @@ using Timesheets.Models.Dto;
 using System.Security.Cryptography;
 using System.Text;
 using Timesheets.Infrastructure.Extensions;
+using Timesheets.Domain.Aggregates.UserAggregate;
 
 namespace Timesheets.Domain.Managers.Implementation
 {
     public class UsersManager : IUsersManager
     {
         private readonly IUsersRepo _userRepo;
+        private readonly IUserAggregateRepo _userAggregateRepo;
 
-        public UsersManager(IUsersRepo userRepo)
+        public UsersManager(IUserAggregateRepo userAggregateRepo, IUsersRepo userRepo)
         {
+            _userAggregateRepo = userAggregateRepo;
             _userRepo = userRepo;
         }
         public async Task<User> GetUser(LoginRequest request)
@@ -31,12 +34,13 @@ namespace Timesheets.Domain.Managers.Implementation
         }
         public async Task<User> GetItem(Guid id)
         {
-            return await _userRepo.GetItem(id);
+            return await _userAggregateRepo.GetItem(id);
         }
         public async Task<Guid> Create(User item)
         {
+            var user = UserAggregate.Create(item.Username, item.PasswordHash, item.Role);
             item.EnsureNotNull(nameof(item));
-            await _userRepo.Add(item);
+            await _userAggregateRepo.Add(user);
             return item.Id;
         }
         public async Task<IEnumerable<User>> GetItems()
