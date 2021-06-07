@@ -24,14 +24,14 @@ namespace Timesheets.Domain.Managers.Implementation
             _invoiceAggregateRepo = invoiceAggregateRepo;
         }
 
-        public Task Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            await _invoiceAggregateRepo.Delete(id);
         }
 
-        public Task<Invoice> GetItem(Guid id)
+        public async Task<Invoice> GetItem(Guid id)
         {
-            throw new NotImplementedException();
+            return await _invoiceAggregateRepo.GetItem(id);
         }
 
         public async Task<IEnumerable<Invoice>> GetItems()
@@ -42,17 +42,17 @@ namespace Timesheets.Domain.Managers.Implementation
         public async Task<Guid> Greate(Invoice request)
         {
 
-            var invoice = InvoiceAggregate.Create(request.ContractId, request.DateEnd, request.DateStart);
+            var invoice = InvoiceAggregate.Create(request.ContractId, request.DateStart, request.DateEnd);
             var sheetsToInclude = await _invoiceAggregateRepo.GetSheets(invoice.ContractId, invoice.DateStart, invoice.DateEnd);
 
             invoice.IncludeSheets(sheetsToInclude);
-            await _invoiceRepo.Add(invoice);
+            await _invoiceAggregateRepo.Add(invoice);
 
             return invoice.Id;      
         }
-        public Task Update(Guid id, Invoice invoice)
+        public async Task Update(Guid id,Invoice invoice)
         {
-            throw new NotImplementedException();
+            await _invoiceAggregateRepo.Update(id, invoice);
         }
     }
 }

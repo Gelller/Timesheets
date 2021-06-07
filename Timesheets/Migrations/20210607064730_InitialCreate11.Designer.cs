@@ -10,8 +10,8 @@ using Timesheets.Data.Ef;
 namespace Timesheets.Migrations
 {
     [DbContext(typeof(TimesheetDbContext))]
-    [Migration("20210602084204_InitialCreate2")]
-    partial class InitialCreate2
+    [Migration("20210607064730_InitialCreate11")]
+    partial class InitialCreate11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,7 +119,7 @@ namespace Timesheets.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<decimal>("Sum")
+                    b.Property<decimal?>("Sum")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");

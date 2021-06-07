@@ -30,9 +30,24 @@ namespace Timesheets.Domain.Aggregates.InvoiceAggregate
         }
         private void CalculateSum()
         {
-            var amount= Sheets.Sum(x => x.Amount * _rate);
-         //  Sum = amount;
-            Sum = Money.FromDeciaml(amount);
+            decimal sum = 0;
+            for (int i = 0; i < Sheets.Count(); i++)
+            {
+                sum += Sheets[i].Amount;
+            }
+            Sum = Money.FromDeciaml(sum * _rate);
+        }
+
+        public static InvoiceAggregate Update(Guid id, Invoice invoice)
+        {
+            return new InvoiceAggregate()
+            {
+                Id = id,
+                ContractId = invoice.ContractId,
+                DateStart = invoice.DateStart,
+                DateEnd = invoice.DateEnd
+
+            };
         }
     }
 }

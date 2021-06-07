@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Timesheets.Data.Ef;
-using Timesheets.Domain.ValueObjects;
 
 namespace Timesheets.Migrations
 {
@@ -118,7 +117,7 @@ namespace Timesheets.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Money>("Sum")
+                    b.Property<decimal?>("Sum")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Timesheets.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialCreate11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,7 +83,7 @@ namespace Timesheets.Migrations
                     ContractId = table.Column<Guid>(type: "uuid", nullable: false),
                     DateStart = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DateEnd = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Sum = table.Column<decimal>(type: "numeric", nullable: false)
+                    Sum = table.Column<decimal>(type: "numeric", nullable: true)
                 },
                 constraints: table =>
                 {

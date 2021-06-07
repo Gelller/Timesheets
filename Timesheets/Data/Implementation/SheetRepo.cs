@@ -56,6 +56,8 @@ namespace Timesheets.Data.Implementation
             var sheets =await  _context.Sheets.Where(x => x.ContractId == contractId)
                 .Where(x => x.Date <= dateEnd && x.Date >= dateStatr)
                 .Where(x=>x.InvoiceId == null).ToListAsync();
+
+          
             return sheets;
         }
     }

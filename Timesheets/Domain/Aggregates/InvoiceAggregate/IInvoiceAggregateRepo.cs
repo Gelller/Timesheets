@@ -9,11 +9,11 @@ namespace Timesheets.Domain.Aggregates.InvoiceAggregate
 {
     public interface IInvoiceAggregateRepo
     {
-      //  Task<InvoiceAggregate> GetItem(Guid id);
+        Task<Guid> Add(Invoice item);
+        Task<Invoice> GetItem(Guid id);
         Task<IEnumerable<Invoice>> GetItems();
-      //  Task<Guid> Add(InvoiceAggregate item);
-      // Task Update(InvoiceAggregate item);
-      //   Task Delete(Guid id);
+        Task Update(Guid id, Invoice item);
+        Task Delete(Guid id);
         Task<IEnumerable<Sheet>> GetSheets(Guid contractId, DateTime dateStart, DateTime dateEnd);
     }
 }

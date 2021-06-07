@@ -8,6 +8,7 @@ using Timesheets.Models.Dto;
 using Timesheets.Domain.Managers.Implementation;
 using System.Security.Cryptography;
 using System.Text;
+using Timesheets.Domain.Aggregates.InvoiceAggregate;
 
 namespace Timesheets
 {
@@ -24,6 +25,8 @@ namespace Timesheets
                  .ForMember(x => x.Id, x => x.MapFrom(x => Guid.NewGuid()));
             CreateMap<InvoiceDto, Invoice>()
                 .ForMember(x => x.Id, x => x.MapFrom(x => Guid.NewGuid()));
+
+
         }      
     }  
 }

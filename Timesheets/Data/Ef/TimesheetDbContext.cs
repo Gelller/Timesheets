@@ -17,7 +17,6 @@ namespace Timesheets.Data.Ef
         public DbSet<User> Users { get; set; }
         public DbSet<Invoice> Invoice { get; set; }
         public DbSet<RefreshToken> RefreshToken { get; set; }
-        public DbSet<Money> Money { get; set; }
 
 
         public TimesheetDbContext(DbContextOptions<TimesheetDbContext> options) : base(options)
@@ -34,7 +33,6 @@ namespace Timesheets.Data.Ef
             modelBuilder.ApplyConfiguration(new SheetConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
-            modelBuilder.ApplyConfiguration(new MoneyConfiguration());
         }
     }
 }

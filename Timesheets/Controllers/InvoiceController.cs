@@ -26,12 +26,13 @@ namespace Timesheets.Controllers
         /// <summary> Возвращяет запись счета по id </summary>
        // [Authorize(Roles = "user, admin")]
         [HttpGet("{id}")]
-        public IActionResult Get([FromQuery] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var result = _invoiceManager.GetItem(id);
-
+            var result = await _invoiceManager.GetItem(id);
             return Ok(result);
         }
+
+      
         /// <summary> Возвращяет все записи счетов </summary>
       //  [Authorize(Roles = "user, admin")]
         [HttpGet]
@@ -44,12 +45,12 @@ namespace Timesheets.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] InvoiceDto invoice)
         {
-            //var isAllowedToCreate = await _contractManager.CheckContractIsActive(invoice.ContractId);
+            var isAllowedToCreate = await _contractManager.CheckContractIsActive(invoice.ContractId);
 
-            //if (isAllowedToCreate != null && !(bool)isAllowedToCreate)
-            //{
-            //    return BadRequest($"Contract {invoice.ContractId} is not active or not found.");
-            //}
+            if (isAllowedToCreate != null && !(bool)isAllowedToCreate)
+            {
+                return BadRequest($"Contract {invoice.ContractId} is not active or not found.");
+            }
 
             var id = await _invoiceManager.Greate(_mapper.Map<Invoice>(invoice));
             return Ok(id);
@@ -58,7 +59,7 @@ namespace Timesheets.Controllers
        // [Authorize(Roles = "user, admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] InvoiceDto invoice)
-        {             
+        {      
             await _invoiceManager.Update(id, _mapper.Map<Invoice>(invoice));
             return Ok();
         }
