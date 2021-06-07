@@ -36,12 +36,11 @@ namespace Timesheets.Domain.Managers.Implementation
         }
         public async Task Update(Guid id, Employee employee)
         {
-            employee.Id = id;
-            await _employeeRepo.Update(employee);
+            await _employeeAggregateRepo.Update(id, employee);
         }
         public async Task Delete(Guid id)
         {
-            await _employeeRepo.Delete(id);
+            await _employeeAggregateRepo.Delete(id);
         }
     }
 }

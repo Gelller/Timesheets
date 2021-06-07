@@ -20,5 +20,14 @@ namespace Timesheets.Domain.Aggregates.EmployeeAggregate
 
             };
         }
+        public static EmployeeAggregate Update(Guid id, Employee employee)
+        {
+            return new EmployeeAggregate()
+            {
+                Id = Guid.NewGuid(),
+                UserId = employee.UserId,
+                IsDeleted = employee.IsDeleted
+            };
+        }
     }
 }

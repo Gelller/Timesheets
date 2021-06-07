@@ -22,36 +22,32 @@ namespace Timesheets.Domain.Managers.Implementation
         }
         public async Task<Sheet> GetItem(Guid id)
         {
-            return await _sheetRepo.GetItem(id);
+            return await _sheetAggregateRepo.GetItem(id);
         }
         public async Task<IEnumerable<Sheet>> GetItems()
         {
-            return await _sheetRepo.GetItems();
+            return await _sheetAggregateRepo.GetItems();
         }
         public async Task<Guid> Create(Sheet sheetRequest)
         {
             var sheet = SheetAggregate.CreateFromSheetDto(sheetRequest);
-            await _sheetRepo.Add(sheet);
+            await _sheetAggregateRepo.Add(sheet);
             return sheet.Id;
         }
 
         public async Task Approve(Guid sheetId)
         {
             var sheet = await _sheetAggregateRepo.GetItem(sheetId);
-            sheet.ApproveSheet();
-            await _sheetAggregateRepo.Update(sheet);
+            SheetAggregate.ApproveSheet(sheetId, sheet);
+            await _sheetAggregateRepo.Update(sheetId, sheet);
         }
-        public async Task Update(Guid id, Sheet sheetDto)
+        public async Task Update(Guid id, Sheet item)
         {
-
-            var sheet = SheetAggregate.CreateFromSheetDto(sheetDto);
-            await _sheetAggregateRepo.Update(sheet);
-            // sheet.Id = id;
-            //  await _sheetRepo.Update(sheet);
+            await _sheetAggregateRepo.Update(id, item);
         }
         public async Task Delete(Guid id)
         {
-            await _sheetRepo.Delete(id);
+            await _sheetAggregateRepo.Delete(id);
         }
       
     }

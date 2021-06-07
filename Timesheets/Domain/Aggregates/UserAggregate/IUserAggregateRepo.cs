@@ -8,6 +8,9 @@ namespace Timesheets.Domain.Aggregates.UserAggregate
 {
     public interface IUserAggregateRepo
     {
+        Task <IEnumerable<User>> GetItems();
+        Task Update(Guid id, User item);
+        Task Delete(Guid id);
         Task<User> GetItem(Guid id);
         Task<Guid> Add(User item);
     }

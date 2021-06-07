@@ -9,10 +9,10 @@ namespace Timesheets.Domain.Aggregates.SheetAgrregate
   //  public interface ISheetAggregateRepo:IRepoBaseAggregate<SheetAggregate>
   public interface ISheetAggregateRepo
     {
-        Task<SheetAggregate> GetItem(Guid id);
-        Task<IEnumerable<SheetAggregate>> GetItems();
-        Task<Guid> Add(SheetAggregate item);
-        Task Update(SheetAggregate item);
+        Task<Sheet> GetItem(Guid id);
+        Task<IEnumerable<Sheet>> GetItems();
+        Task<Guid> Add(Sheet item);
+        Task Update(Guid id, Sheet item);
         Task Delete(Guid id);
         Task<Sheet> Approve(Guid sheetId);
     }

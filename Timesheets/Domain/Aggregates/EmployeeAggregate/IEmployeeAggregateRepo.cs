@@ -11,5 +11,7 @@ namespace Timesheets.Domain.Aggregates.EmployeeAggregate
         Task<Employee> GetItem(Guid id);
         Task<IEnumerable<Employee>> GetItems();
         Task<Guid> Add(Employee item);
+        Task Update(Guid id, Employee item);
+        Task Delete(Guid id);
     }
 }

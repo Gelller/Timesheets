@@ -23,6 +23,13 @@ namespace Timesheets.Domain.Aggregates.EmployeeAggregate
             return item.Id;
         }
 
+        public async Task Delete(Guid id)
+        {
+            var item = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(item);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Employee> GetItem(Guid id)
         {
             var result = await _context.Employees.FindAsync(id);
@@ -32,6 +39,13 @@ namespace Timesheets.Domain.Aggregates.EmployeeAggregate
         {
             var result = await _context.Employees.ToListAsync();
             return result;
+        }
+
+        public async Task Update(Guid id, Employee item)
+        {
+            var employee = EmployeeAggregate.Update(id, item);
+            _context.Employees.Update(employee);
+            await _context.SaveChangesAsync();
         }
     }
 }

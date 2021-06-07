@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Timesheets.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class SheetsController :TimesheetBaseController
     {
         private readonly ISheetManager _sheetManager;
@@ -25,16 +25,16 @@ namespace Timesheets.Controllers
             _mapper = mapper;
         }
         /// <summary> Возвращяет запись табеля по id </summary>
-        [Authorize(Roles = "user, admin")]
+      //  [Authorize(Roles = "user, admin")]
         [HttpGet("{id}")]
-        public IActionResult Get([FromQuery] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var result = _sheetManager.GetItem(id);
+            var result = await _sheetManager.GetItem(id);
 
             return Ok(result);
         }
         /// <summary> Возвращяет все записи табеля </summary>
-        [Authorize(Roles = "user, admin")]
+      //  [Authorize(Roles = "user, admin")]
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
@@ -42,7 +42,7 @@ namespace Timesheets.Controllers
             return Ok(result);
         }
         /// <summary> Создает запись табеля </summary>
-        [Authorize(Roles = "user, admin")]
+       // [Authorize(Roles = "user, admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SheetDto sheet)
         {
@@ -58,7 +58,7 @@ namespace Timesheets.Controllers
         }
 
         /// <summary> Обновляет запись табеля </summary>
-        [Authorize(Roles = "user, admin")]
+       // [Authorize(Roles = "user, admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] SheetDto sheet)
         {
@@ -73,7 +73,7 @@ namespace Timesheets.Controllers
             return Ok();
         }
         /// <summary> Удаляет запись табеля </summary>
-        [Authorize(Roles = "user, admin")]
+       // [Authorize(Roles = "user, admin")]
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {

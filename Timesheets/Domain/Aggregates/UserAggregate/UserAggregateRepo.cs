@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Timesheets.Data.Ef;
 using Timesheets.Models;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 
 namespace Timesheets.Domain.Aggregates.UserAggregate
 {
@@ -46,6 +47,26 @@ namespace Timesheets.Domain.Aggregates.UserAggregate
                 rng.GetBytes(randomNumber);
                 return Convert.ToBase64String(randomNumber);
             }
+        }
+
+        public async Task<IEnumerable<User>> GetItems()
+        {
+            var result = await _context.Users.ToListAsync();
+            return result;
+        }
+
+        public async Task Update(Guid id, User item)
+        {
+            var user = UserAggregate.Update(id, item);
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var item = await _context.Users.FindAsync(id);
+            _context.Users.Remove(item);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -45,16 +45,15 @@ namespace Timesheets.Domain.Managers.Implementation
         }
         public async Task<IEnumerable<User>> GetItems()
         {
-            return await _userRepo.GetItems();
+            return await _userAggregateRepo.GetItems();
         }
         public async Task Update(Guid id, User item)
         {
-            item.Id = id;
-            await _userRepo.Update(item);
+            await _userAggregateRepo.Update(id, item);
         }
         public async Task Delete(Guid id)
         {
-            await _userRepo.Delete(id);
+            await _userAggregateRepo.Delete(id);
         }
         public static byte[] GetPasswordHash(string password)
         {

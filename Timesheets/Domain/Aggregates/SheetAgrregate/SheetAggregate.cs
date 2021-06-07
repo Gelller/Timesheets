@@ -36,14 +36,43 @@ namespace Timesheets.Domain.Aggregates.SheetAgrregate
                 ServiceId = sheet.ServiceId
             };
         }
-        public void ApproveSheet()
+        //public void ApproveSheet()
+        //{
+        //    IsApproved = true;
+        //    ApprovedDate = DateTime.Now;
+        //}
+
+        public static SheetAggregate ApproveSheet(Guid id, Sheet sheet)
         {
-            IsApproved = true;
-            ApprovedDate = DateTime.Now;
+            return new SheetAggregate()
+            {
+                Id = id,
+                Amount = sheet.Amount,
+                ContractId = sheet.ContractId,
+                Date = sheet.Date,
+                EmployeeId = sheet.EmployeeId,
+                ServiceId = sheet.ServiceId,
+                IsApproved = true,
+                ApprovedDate = DateTime.Now
+
+            };
         }
         public void ChangeEmployee(Guid newEmployeeId)
         {
             EmployeeId = newEmployeeId;
+        }
+        public static SheetAggregate Update(Guid id, Sheet sheet)
+        {
+            return new SheetAggregate()
+            {
+                Id = id,
+                Amount = sheet.Amount,
+                ContractId = sheet.ContractId,
+                Date = sheet.Date,
+                EmployeeId = sheet.EmployeeId,
+                ServiceId = sheet.ServiceId,
+
+        };
         }
     }
 }

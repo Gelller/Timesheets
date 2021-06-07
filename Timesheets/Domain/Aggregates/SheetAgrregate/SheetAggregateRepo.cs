@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,9 +16,11 @@ namespace Timesheets.Domain.Aggregates.SheetAgrregate
         {
             _context = context;
         }
-        public Task<Guid> Add(SheetAggregate item)
+        public async Task<Guid> Add(Sheet item)
         {
-            throw new NotImplementedException();
+            await _context.Sheets.AddAsync(item);
+            await _context.SaveChangesAsync();
+            return item.Id;
         }
 
         public async Task<Sheet> Approve(Guid sheetId)
@@ -26,24 +29,29 @@ namespace Timesheets.Domain.Aggregates.SheetAgrregate
             return result;
         }
 
-        public Task Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var item = await _context.Sheets.FindAsync(id);
+            _context.Sheets.Remove(item);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<SheetAggregate> GetItem(Guid id)
+        public async Task<Sheet> GetItem(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _context.Sheets.FindAsync(id);
+            return (SheetAggregate)result;
         }
 
-        public Task<IEnumerable<SheetAggregate>> GetItems()
+        public async Task<IEnumerable<Sheet>> GetItems()
         {
-            throw new NotImplementedException();
+            var result = await _context.Sheets.ToListAsync();
+            return result;
         }
 
-        public async Task Update(SheetAggregate item)
+        public async Task Update(Guid id, Sheet item)
         {
-            _context.Sheets.Update(item);
+            var sheet = SheetAggregate.Update(id, item);
+            _context.Sheets.Update(sheet);
             await _context.SaveChangesAsync();
         }
     }
