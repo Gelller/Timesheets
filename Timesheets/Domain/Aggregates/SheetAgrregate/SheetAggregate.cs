@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Models;
+using Timesheets.Models.Dto;
 
 namespace Timesheets.Domain.Aggregates.SheetAgrregate
 {
@@ -36,6 +37,7 @@ namespace Timesheets.Domain.Aggregates.SheetAgrregate
                 ServiceId = sheet.ServiceId
             };
         }
+      
         //public void ApproveSheet()
         //{
         //    IsApproved = true;

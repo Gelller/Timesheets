@@ -24,7 +24,7 @@ namespace Timesheets.Domain.Aggregates.EmployeeAggregate
         {
             return new EmployeeAggregate()
             {
-                Id = Guid.NewGuid(),
+                Id = id,
                 UserId = employee.UserId,
                 IsDeleted = employee.IsDeleted
             };
