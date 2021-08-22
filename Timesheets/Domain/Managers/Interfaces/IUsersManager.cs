@@ -6,7 +6,7 @@ using Timesheets.Data;
 using Timesheets.Models;
 using Timesheets.Models.Dto;
 
-namespace Timesheets.Domain.Interfaces
+namespace Timesheets.Domain.Managers.Interfaces
 {
     public interface IUsersManager
     { 

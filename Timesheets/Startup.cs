@@ -12,14 +12,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
-using Timesheets.Domain.Interfaces;
-using Timesheets.Domain.Implementation;
+using Timesheets.Domain.Managers.Interfaces;
+using Timesheets.Domain.Managers.Implementation;
 using AutoMapper;
 using Timesheets.Data;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore.Design;
 using Timesheets.Infrastructure.Extensions;
+using FluentValidation.AspNetCore;
 
 
 namespace Timesheets
@@ -42,8 +43,9 @@ namespace Timesheets
             services.ConfigureDomainManagers();
             services.ConfigureBackendSwagger();
             services.ConfigureMapper();
+            services.ConfigureValidation();
 
-            services.AddControllers();          
+            services.AddControllers().AddFluentValidation();          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

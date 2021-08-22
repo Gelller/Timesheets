@@ -1,24 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using Timesheets.Domain.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using Timesheets.Data.Implementation;
+using Timesheets.Data.Interfaces;
+using Timesheets.Domain.Managers.Interfaces;
 using Timesheets.Infrastructure.Extensions;
 using Timesheets.Models;
 using Timesheets.Models.Dto;
 using Timesheets.Models.Dto.Authentication;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace Timesheets.Domain.Implementation
+namespace Timesheets.Domain.Managers.Implementation
 {
     public class LoginManager : ILoginManager
     {
         private readonly JwtAccessOptions _jwtAccessOptions;
+        private readonly IRefreshTokenRepo _refreshTokenRepo;
 
-        public LoginManager(IOptions<JwtAccessOptions> jwtAccessOptions)
+        public LoginManager(IRefreshTokenRepo refreshToken, IOptions<JwtAccessOptions> jwtAccessOptions)
         {
             _jwtAccessOptions = jwtAccessOptions.Value;
+            _refreshTokenRepo = refreshToken;
         }
 
         public async Task<LoginResponse> Authenticate(User user)
@@ -33,11 +41,13 @@ namespace Timesheets.Domain.Implementation
             var accessTokenRaw = _jwtAccessOptions.GenerateToken(claims);
             var securityHandler = new JwtSecurityTokenHandler();
             var accessToken = securityHandler.WriteToken(accessTokenRaw);
+            var refreshToken = _refreshTokenRepo.GetItem(user.Id).Result.Token;
 
             var loginResponse = new LoginResponse()
             {
                 AccessToken = accessToken,
-                ExpiresIn = accessTokenRaw.ValidTo.ToEpochTime()
+                ExpiresIn = accessTokenRaw.ValidTo.ToEpochTime(),
+                RefreshToken = refreshToken
             };
 
             return loginResponse;

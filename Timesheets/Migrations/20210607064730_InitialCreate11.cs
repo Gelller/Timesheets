@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Timesheets.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialCreate11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,7 +83,7 @@ namespace Timesheets.Migrations
                     ContractId = table.Column<Guid>(type: "uuid", nullable: false),
                     DateStart = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DateEnd = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Sum = table.Column<decimal>(type: "numeric", nullable: false)
+                    Sum = table.Column<decimal>(type: "numeric", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,6 +97,26 @@ namespace Timesheets.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "refreshToken",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Token = table.Column<string>(type: "text", nullable: true),
+                    Expiration = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_refreshToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_refreshToken_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "sheets",
                 columns: table => new
                 {
@@ -105,8 +125,10 @@ namespace Timesheets.Migrations
                     EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
                     ContractId = table.Column<Guid>(type: "uuid", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    InvoiceId = table.Column<Guid>(type: "uuid", nullable: true),
                     Amount = table.Column<int>(type: "integer", nullable: false),
-                    InvoiceId = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsApproved = table.Column<bool>(type: "boolean", nullable: false),
+                    ApprovedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,6 +165,12 @@ namespace Timesheets.Migrations
                 column: "ContractId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_refreshToken_UserId",
+                table: "refreshToken",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_sheets_ContractId",
                 table: "sheets",
                 column: "ContractId");
@@ -167,6 +195,9 @@ namespace Timesheets.Migrations
         {
             migrationBuilder.DropTable(
                 name: "clients");
+
+            migrationBuilder.DropTable(
+                name: "refreshToken");
 
             migrationBuilder.DropTable(
                 name: "sheets");

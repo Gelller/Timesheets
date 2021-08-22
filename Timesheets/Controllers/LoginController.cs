@@ -1,15 +1,19 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Timesheets.Domain.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using Stripe.Issuing;
+using Timesheets.Domain.Managers.Interfaces;
+using Timesheets.Models;
 using Timesheets.Models.Dto;
 
 
 namespace Timesheets.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class LoginController : ControllerBase
+    public class LoginController :TimesheetBaseController
     {
         private readonly IUsersManager _userManager;
         private readonly ILoginManager _loginManager;
@@ -35,3 +39,4 @@ namespace Timesheets.Controllers
         }
     }
 }
+

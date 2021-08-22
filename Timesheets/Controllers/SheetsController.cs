@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Interfaces;
 using Timesheets.Models.Dto;
 using Timesheets.Models;
 using AutoMapper;
@@ -11,10 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Timesheets.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [Route("[controller]")]
-    public class SheetsController : ControllerBase
+   // [Authorize]
+    public class SheetsController :TimesheetBaseController
     {
         private readonly ISheetManager _sheetManager;
         private readonly IContractManager _contractManager;
@@ -26,24 +24,25 @@ namespace Timesheets.Controllers
             _contractManager = contractManager;
             _mapper = mapper;
         }
-        [Authorize(Roles = "user")]
+        /// <summary> Возвращяет запись табеля по id </summary>
+      //  [Authorize(Roles = "user, admin")]
         [HttpGet("{id}")]
-        public IActionResult Get([FromQuery] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var result = _sheetManager.GetItem(id);
+            var result = await _sheetManager.GetItem(id);
 
             return Ok(result);
         }
-        [Authorize(Roles = "user")]
+        /// <summary> Возвращяет все записи табеля </summary>
+      //  [Authorize(Roles = "user, admin")]
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
             var result = await _sheetManager.GetItems();
             return Ok(result);
         }
-
-        /// <summary> Возвращает запись табеля </summary>
-        [Authorize(Roles = "user")]
+        /// <summary> Создает запись табеля </summary>
+       // [Authorize(Roles = "user, admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SheetDto sheet)
         {
@@ -59,7 +58,7 @@ namespace Timesheets.Controllers
         }
 
         /// <summary> Обновляет запись табеля </summary>
-        [Authorize(Roles = "user")]
+       // [Authorize(Roles = "user, admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] SheetDto sheet)
         {
@@ -71,7 +70,14 @@ namespace Timesheets.Controllers
             }
 
             await _sheetManager.Update(id, _mapper.Map<Sheet>(sheet));
-
+            return Ok();
+        }
+        /// <summary> Удаляет запись табеля </summary>
+       // [Authorize(Roles = "user, admin")]
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            await _sheetManager.Delete(id);
             return Ok();
         }
     }

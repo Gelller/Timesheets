@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Interfaces;
 using Timesheets.Models;
 using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
@@ -11,15 +11,18 @@ using Timesheets.Models.Dto;
 using System.Security.Cryptography;
 using System.Text;
 using Timesheets.Infrastructure.Extensions;
+using Timesheets.Domain.Aggregates.UserAggregate;
 
-namespace Timesheets.Domain.Implementation
+namespace Timesheets.Domain.Managers.Implementation
 {
     public class UsersManager : IUsersManager
     {
         private readonly IUsersRepo _userRepo;
+        private readonly IUserAggregateRepo _userAggregateRepo;
 
-        public UsersManager(IUsersRepo userRepo)
+        public UsersManager(IUserAggregateRepo userAggregateRepo, IUsersRepo userRepo)
         {
+            _userAggregateRepo = userAggregateRepo;
             _userRepo = userRepo;
         }
         public async Task<User> GetUser(LoginRequest request)
@@ -31,26 +34,26 @@ namespace Timesheets.Domain.Implementation
         }
         public async Task<User> GetItem(Guid id)
         {
-            return await _userRepo.GetItem(id);
+            return await _userAggregateRepo.GetItem(id);
         }
         public async Task<Guid> Create(User item)
         {
+            var user = UserAggregate.Create(item.Username, item.PasswordHash, item.Role);
             item.EnsureNotNull(nameof(item));
-            await _userRepo.Add(item);
+            await _userAggregateRepo.Add(user);
             return item.Id;
         }
         public async Task<IEnumerable<User>> GetItems()
         {
-            return await _userRepo.GetItems();
+            return await _userAggregateRepo.GetItems();
         }
         public async Task Update(Guid id, User item)
         {
-            item.Id = id;
-            await _userRepo.Update(item);
+            await _userAggregateRepo.Update(id, item);
         }
         public async Task Delete(Guid id)
         {
-            await _userRepo.Delete(id);
+            await _userAggregateRepo.Delete(id);
         }
         public static byte[] GetPasswordHash(string password)
         {

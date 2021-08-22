@@ -9,9 +9,18 @@ using Timesheets.Data;
 using Timesheets.Data.Ef;
 using Timesheets.Data.Implementation;
 using Timesheets.Data.Interfaces;
-using Timesheets.Domain.Implementation;
-using Timesheets.Domain.Interfaces;
+using Timesheets.Domain.Managers.Implementation;
+using Timesheets.Domain.Managers.Interfaces;
+using Timesheets.Models.Dto;
 using Timesheets.Models.Dto.Authentication;
+using FluentValidation;
+using Timesheets.Infrastructure.Validation;
+using Timesheets.Domain.Aggregates.InvoiceAggregate;
+using Timesheets.Domain.Aggregates.SheetAgrregate;
+using Timesheets.Domain.ValueObjects;
+using Timesheets.Domain;
+using Timesheets.Domain.Aggregates.UserAggregate;
+using Timesheets.Domain.Aggregates.EmployeeAggregate;
 
 namespace Timesheets.Infrastructure.Extensions
 {
@@ -57,6 +66,9 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<ILoginManager, LoginManager>();
             services.AddScoped<ISheetManager, SheetManager>();
             services.AddScoped<IContractManager, ContractManager>();
+            services.AddScoped<IInvoiceManager, InvoiceManager>();
+        
+
         }
 
         public static void ConfigureRepositories(this IServiceCollection services)
@@ -65,6 +77,16 @@ namespace Timesheets.Infrastructure.Extensions
             services.AddScoped<IEmployeeRepo, EmployeeRepo>();
             services.AddScoped<ISheetRepo, SheetRepo>();
             services.AddScoped<IContractRepo, ContractRepo>();
+            services.AddScoped<IInvoiceRepo, InvoiceRepo>();
+            services.AddScoped<IRefreshTokenRepo, RefreshTokenRepo>();
+
+             services.AddScoped<IInvoiceAggregateRepo, InvoiceAggregateRepo>();
+            services.AddScoped<ISheetAggregateRepo, SheetAggregateRepo>();
+            services.AddScoped<IUserAggregateRepo, UserAggregateRepo>();
+            services.AddScoped<IEmployeeAggregateRepo, EmployeeAggregateRepo>();
+
+
+
         }
 
         public static void ConfigureMapper(this IServiceCollection services)
@@ -97,6 +119,13 @@ namespace Timesheets.Infrastructure.Extensions
                     }
                 });
             });
+        }
+        public static void ConfigureValidation(this IServiceCollection services)
+        {
+            services.AddTransient<IValidator<SheetDto>, SheetDtoValidator>();
+            services.AddTransient<IValidator<UserDto>, UserDtoValidation>();
+            services.AddTransient<IValidator<InvoiceDto>, InvoiceDtoValidator>();
+            services.AddTransient<IValidator<EmployeeDto>, EmployeeDtoValidation>();
         }
     }
 }
